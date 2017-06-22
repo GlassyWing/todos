@@ -1,0 +1,133 @@
+<md-sidenav-container class="demo-sidenav-container">
+  <md-menu #menu="mdMenu">
+    <button md-menu-item (click)="setting()"> 设置</button>
+    <button md-menu-item (click)="exit()"> 退出登录</button>
+  </md-menu>
+
+  <!--侧边导航栏-->
+  <md-sidenav #start mode="side" [opened]="true" class="g-left">
+
+    <!--用户概要-->
+    <md-list>
+      <md-list-item class="white-text">
+        <button md-icon-button [mdMenuTriggerFor]="menu">
+          <img class="avatar" src="/app/task/control_panel/avatar-new.png">
+        </button>
+        <h4 class="info">{{username}}</h4>
+      </md-list-item>
+    </md-list>
+
+    <md-divider></md-divider>
+
+    <!--集合-->
+    <md-nav-list>
+      <md-list-item class="white-text">
+        <md-icon md-list-icon>reorder</md-icon>
+        <a md-line
+           (click)="setContentInfo('所有', '收集箱');
+           show('SHOW_ALL');
+           setCurrentProject(appState.inboxId);
+           setEditable(true);
+           reset();
+">
+          所有
+        </a>
+
+      </md-list-item>
+      <md-list-item class="white-text">
+        <md-icon md-list-icon>today</md-icon>
+        <a md-line (click)="
+        setContentInfo('今天', '收集箱')
+        ; show('SHOW_TODAY')
+        ; setCurrentProject(appState.inboxId)
+        ; setEditable(true)
+        ; reset();
+">
+          今天
+        </a>
+      </md-list-item>
+      <md-list-item class="white-text">
+        <md-icon md-list-icon>inbox</md-icon>
+        <a md-line (click)="
+        setContentInfo('收集箱', '收集箱')
+        ; show('SHOW_INBOX')
+        ;setCurrentProject(appState.inboxId)
+        ; setEditable(true)
+                ; reset();
+
+">
+          收集箱
+        </a>
+      </md-list-item>
+
+    </md-nav-list>
+
+    <!--tab组-->
+    <md-tab-group [dynamicHeight]="true">
+      <!--清单-->
+      <md-tab label="清单" class="white-text">
+        <md-nav-list>
+          <md-list-item class="white-text"
+                        *ngFor="let project of appState.projects">
+            <md-icon md-list-icon>list</md-icon>
+            <a md-line
+               (click)="
+                 setContentInfo(project.title, project.title)
+                 ; show(project.projectUuid)
+                 ; setCurrentProject(project.projectUuid)
+                 ; setEditable(true);
+                 ; reset()
+">
+              {{project.title}}
+            </a>
+            <button md-icon-button (click)="editProject(project, $event)">
+              <md-icon class="md-12">border_color</md-icon>
+            </button>
+            <button md-icon-button (click)="deleteProject(project, $event)">
+              <md-icon class="md-12">remove_circle</md-icon>
+            </button>
+          </md-list-item>
+          <md-list-item class="white-text" (click)="addProject($event)">
+            <md-icon md-list-icon="">add</md-icon>
+            <h4 md-line>添加清单</h4>
+          </md-list-item>
+        </md-nav-list>
+      </md-tab>
+    </md-tab-group>
+
+    <md-divider></md-divider>
+
+    <!--其它-->
+    <md-nav-list>
+      <md-list-item class="white-text" (click)="
+            show('SHOW_COMPLETED')
+            ;setContentInfo('已完成', '收集箱')
+            ; reset()
+            ; setEditable(false)">
+        <md-icon md-list-icon>done_all</md-icon>
+        <h4 md-line>已完成</h4>
+      </md-list-item>
+      <md-list-item class="white-text" (click)="
+      loadRecycledTasks()
+      ; detailPanel.hidden()
+      ; setContentInfo('垃圾桶', '收集箱')
+      ; setEditable(false)">
+        <md-icon md-list-icon>delete</md-icon>
+        <h4 md-line>垃圾桶</h4>
+      </md-list-item>
+    </md-nav-list>
+
+  </md-sidenav>
+
+  <!--用户主要视图-->
+  <div class="my-content">
+    <div class="g-center">
+      <task-content (toggle)="start.toggle()"></task-content>
+    </div>
+    <div class="g-right">
+      <task-detail-panel></task-detail-panel>
+    </div>
+  </div>
+
+</md-sidenav-container>
+

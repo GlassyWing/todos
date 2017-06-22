@@ -1,0 +1,55 @@
+<div class="box" *ngIf="!hasModel">
+    <h3 class="grey-text">点击任务标题查看详情</h3>
+</div>
+
+<div class="task-detail-container" *ngIf="hasModel">
+  <md-toolbar>
+    <md2-datepicker
+      placeholder="请选择时间"
+      type="datetime"
+      [(ngModel)]="task.startTime"
+      [formControl]="datePicker"
+      format="y/M/d H:mm A">
+    </md2-datepicker>
+  </md-toolbar>
+  <section class="task-detail-content">
+    <md-input-container>
+      <input mdInput [formControl]="taskTitle" type="text" placeholder="准备做什么？" value="{{task.title}}">
+      <md-error>
+        必须输入该选项哦！
+      </md-error>
+    </md-input-container>
+    <md-input-container>
+      <textarea mdTextareaAutosize mdInput [formControl]="taskContent" placeholder="描述">{{task.content}}</textarea>
+    </md-input-container>
+  </section>
+  <section class="task-detail-footer">
+    <md-toolbar class="white">
+      <button [disabled]="recycleModal" md-icon-button class="grey-text" [mdMenuTriggerFor]="projectMenu">
+        <md-icon>launch</md-icon>
+        <span class="text-primary" md-line>{{currentProject.title}}</span>
+      </button>
+      <span class="fill-remaining-space"></span>
+      <button md-icon-button class="grey-text" (click)="recycle()">
+        <md-icon>delete</md-icon>
+      </button>
+      <button md-icon-button class="grey-text" *ngIf="recycleModal" (click)="restore()">
+        <md-icon>reply</md-icon>
+      </button>
+    </md-toolbar>
+  </section>
+
+</div>
+
+<md-menu #projectMenu="mdMenu" yPosition="above">
+  <button md-menu-item *ngFor="let project of projects" (click)="setProject(project.projectUuid)">
+    <md-icon>list</md-icon>
+    <span>{{project.title}}</span>
+  </button>
+  <button md-menu-item  (click)="setProject(inboxId)">
+    <md-icon>inbox</md-icon>
+    <span>收集箱</span>
+  </button>
+</md-menu>
+
+

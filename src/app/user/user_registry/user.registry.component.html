@@ -1,0 +1,59 @@
+<div class="sign">
+  <app-logo></app-logo>
+  <md-card class="card-section">
+    <form [formGroup]="registryForm" (ngSubmit)="registry()">
+
+      <div>
+        <md-input-container>
+          <input mdInput type="text" placeholder="昵称（可选）" [formControl]="nickname"  name="nickname">
+        </md-input-container>
+      </div>
+
+      <div>
+        <md-input-container>
+          <input mdInput type="email" placeholder="邮箱" [formControl]="email"  name="email" required>
+          <md-error *ngIf="email.hasError('email-error')" align="end">
+            {{email.getError('email-error')}}
+          </md-error>
+          <md-error *ngIf="email.hasError('email')" align="end">
+            邮箱格式不正确
+          </md-error>
+        </md-input-container>
+      </div>
+
+      <div>
+        <md-input-container>
+          <input mdInput type="password" placeholder="密码" [formControl]="password" name="password" required
+                 minlength="6">
+          <md-error *ngIf="password.hasError('password-error')" align="end">
+            {{password.getError('password-error')}}
+          </md-error>
+          <md-error *ngIf="password.hasError('required')" align="end">
+            需要输入密码
+          </md-error>
+          <md-error *ngIf="password.hasError('minlength')" align="end">
+            密码最少需要6位
+          </md-error>
+        </md-input-container>
+      </div>
+
+      <div>
+        <md-input-container>
+          <input mdInput type="password" placeholder="确认密码" [formControl]="confirmPassword" name="password" required>
+          <md-error *ngIf="confirmPassword.hasError('required')" align="end">
+            请确认密码
+          </md-error>
+          <md-error *ngIf="confirmPassword.hasError('mismatchedPassword')" align="end">
+            密码不匹配
+          </md-error>
+        </md-input-container>
+      </div>
+
+      <button class="submit-button" color="primary" type="submit" md-raised-button [disabled]="!registryForm.valid">注册</button>
+    </form>
+    <div class="divider"></div>
+    <div class="center">
+      <a routerLink="/login">登录</a>
+    </div>
+  </md-card>
+</div>

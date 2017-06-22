@@ -1,0 +1,160 @@
+<div class="container">
+  <div class="box">
+    <div class="item">
+      <h2>设置</h2>
+    </div>
+    <div class="item text-right">
+      <button md-raised-button color="primary" (click)="done()">完成</button>
+    </div>
+  </div>
+  <md-tab-group>
+    <md-tab>
+      <ng-template md-tab-label>
+        个人设置
+      </ng-template>
+      <div class="container">
+        <div class="box">
+          <div class="item"><img class="avatar" src="/app/settings/avatar-new.png"></div>
+          <md-input-container class="item">
+            <input mdInput [formControl]="nickname" value="{{user.nickname}}">
+          </md-input-container>
+        </div>
+
+        <div class="box">
+          <div class="item">
+            <h5>邮箱</h5>
+          </div>
+          <div class="item text-right">
+            <span>{{user.email}}</span>
+            <button md-button (click)="showEmailEditor = !showEmailEditor">修改邮箱</button>
+          </div>
+        </div>
+
+        <div *ngIf="showEmailEditor" class="box">
+          <div class="item"></div>
+          <div class="item control">
+            <div class="column">
+              <md-input-container>
+                <input mdInput [formControl]="emailEditorEmail" type="text" value="{{user.email}}" placeholder="当前邮箱">
+                <md-error *ngIf="emailEditorEmail.hasError('email')">
+                  邮箱格式不正确
+                </md-error>
+              </md-input-container>
+              <md-input-container>
+                <input mdInput [formControl]="emailEditorPwd" type="password" minlength="6" required placeholder="当前密码">
+                <md-error *ngIf="emailEditorPwd.hasError('required')">
+                  请输入当前密码
+                </md-error>
+                <md-error *ngIf="emailEditorPwd.hasError('minlength')">
+                  密码至少为6位
+                </md-error>
+                <md-error *ngIf="emailEditorPwd.hasError('password-error')">
+                  {{emailEditorPasswordMsg}}
+                </md-error>
+              </md-input-container>
+            </div>
+            <div class="row ">
+              <button md-button class="item" (click)="showEmailEditor = false">取消</button>
+              <button md-raised-button class="item" (click)="changeEmail()" color="primary" [disabled]="emailEditor.invalid">保存</button>
+            </div>
+          </div>
+        </div>
+
+        <div  class="box">
+          <div class="item">
+            <h5>密码</h5>
+          </div>
+          <div class="item text-right">
+            <span>**********</span>
+            <button md-button (click)="showPasswordEditor = !showPasswordEditor">修改密码</button>
+          </div>
+        </div>
+
+        <div *ngIf="showPasswordEditor" class="box">
+          <div class="item"></div>
+          <div class="item control">
+            <div class="column">
+              <md-input-container>
+                <input mdInput [formControl]="pwdEditorOriginPwd" minlength="6" type="password" required placeholder="当前密码">
+                <md-error *ngIf="pwdEditorOriginPwd.hasError('required')">
+                  请输入当前密码
+                </md-error>
+                <md-error *ngIf="pwdEditorOriginPwd.hasError('minlength')">
+                  密码至少为6位
+                </md-error>
+                <md-error *ngIf="pwdEditorOriginPwd.hasError('password-error')">
+                  {{pwdEditorPasswordMsg}}
+                </md-error>
+              </md-input-container>
+              <md-input-container>
+                <input mdInput [formControl]="pwdEditorNewPwd" type="password" minlength="6" required placeholder="新密码">
+                <md-error *ngIf="pwdEditorNewPwd.hasError('minlength')">
+                  密码至少为6位
+                </md-error>
+                <md-error *ngIf="pwdEditorNewPwd.hasError('required')">
+                  请输入新密码
+                </md-error>
+              </md-input-container>
+            </div>
+            <div class="row">
+              <button md-button (click)="showPasswordEditor = false" class="item">取消</button>
+              <button md-raised-button class="item" (click)="changePassword()" color="primary" [disabled]="pwdEditor.invalid">保存</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </md-tab>
+    <md-tab>
+      <ng-template md-tab-label>
+        偏好设置
+      </ng-template>
+      <div class="container">
+        <h3 md-subheader>时间和日期</h3>
+        <div class="box">
+          <div class="item">每周开始于</div>
+          <div class="item text-right">
+            <md-select [formControl]="startOfDayControl" placeholder="始于">
+              <md-option *ngFor="let dayOfWeek of startOfDays" [value]="dayOfWeek.code">{{dayOfWeek.name}}</md-option>
+            </md-select>
+          </div>
+        </div>
+        <div class="box">
+          <div class="item">每日提醒时间</div>
+          <div class="item text-right">
+            <md2-datepicker
+              placeholder="请选择时间"
+              type="time"
+              [formControl]="dailyRemindTimeControl"
+              format="HH:mm">
+            </md2-datepicker>
+          </div>
+        </div>
+        <div class="box">
+          <div class="item">每日提醒开关</div>
+          <div class="item text-right">
+            <md-slide-toggle [formControl]="dailyRemindToggleControl">切换</md-slide-toggle>
+          </div>
+        </div>
+        <h3 md-subheader>新任务默认设置</h3>
+        <div class="box">
+          <div class="item">默认需在多久前提醒</div>
+          <div class="item text-right">
+            <md-select [formControl]="defaultRemindBeforeControl" placeholder="提醒设置">
+              <md-option *ngFor="let duration of durations" [value]="duration.code">{{duration.name}}</md-option>
+            </md-select>
+          </div>
+        </div>
+        <div class="box">
+          <div class="item">默认优先级</div>
+          <div class="item text-right">
+            <md-select [formControl]="defaultPriorityControl" placeholder="优先级设置">
+              <md-option *ngFor="let priority of priorities" [value]="priority.code">{{priority.name}}</md-option>
+            </md-select>
+          </div>
+        </div>
+      </div>
+    </md-tab>
+  </md-tab-group>
+</div>

@@ -1,0 +1,33 @@
+<md-menu #sortMenu="mdMenu">
+  <button md-menu-item (click)="group(1)">按时间</button>
+  <button md-menu-item (click)="group(0)">按清单</button>
+</md-menu>
+
+<md-toolbar class="white">
+  <button md-icon-button (click)="switch()">
+    <md-icon>menu</md-icon>
+  </button>
+  <h5 class="text-primary" md-line>{{title}}</h5>
+  <span class="fill-remaining-space"></span>
+  <button md-icon-button [mdMenuTriggerFor]="sortMenu">
+    <md-icon>sort</md-icon>
+  </button>
+  <md-toolbar-row *ngIf="editable">
+    <md-input-container class="fill-remaining-space">
+      <input mdInput [formControl]="addTaskInput" type="text" placeholder="添加任务到{{project}}" (keyup.enter)="addTask()">
+    </md-input-container>
+  </md-toolbar-row>
+</md-toolbar>
+
+<ng-template ngIf [ngIf]="!recycleModal">
+  <task-list *ngFor="let taskGroup of appStateVariant.taskGroups"
+             [title]="taskGroup.title"
+             [tasks]="taskGroup.tasks" (detail)="showDetail($event)">
+  </task-list>
+</ng-template>
+
+<ng-template ngIf [ngIf]="recycleModal">
+  <task-list [editable]="false" title="回收站" (detail)="showDetail($event)" [tasks]="recycledTasks">
+  </task-list>
+</ng-template>
+

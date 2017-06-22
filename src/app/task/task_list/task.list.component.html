@@ -1,0 +1,26 @@
+<div class="task-list">
+
+  <div class="task-list-head">
+    <button md-icon-button (click)="isCollapsed = !isCollapsed">
+      <md-icon *ngIf="!isCollapsed">keyboard_arrow_down</md-icon>
+      <md-icon *ngIf="isCollapsed">keyboard_arrow_right</md-icon>
+      {{title}}
+    </button>
+    <span class="fill-remaining-space"></span>
+    <button *ngIf="isCollapsed" md-icon-button class="text-right">
+      {{tasks.length}}
+    </button>
+  </div>
+  <div class="task-list-content">
+    <md-divider *ngIf="isCollapsed"></md-divider>
+    <div [collapse]="isCollapsed">
+      <md-nav-list>
+        <md-list-item *ngFor="let task of tasks" (click)="showDetail(task.scheduleUuid)">
+          <md-checkbox [disabled]="!editable" [checked]="task.status === 2" (click)="stopEvent($event)" (change)="onStateChange($event, task.scheduleUuid)">{{task.title}}</md-checkbox>
+          <span class="fill-remaining-space"></span>
+          <span class="text-right">{{task.startTime | humanReadableDate}}</span>
+        </md-list-item>
+      </md-nav-list>
+    </div>
+  </div>
+</div>

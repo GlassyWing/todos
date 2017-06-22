@@ -1,0 +1,50 @@
+.box {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.align-right {
+  flex-direction: row-reverse;
+}
+
+.align-left {
+  flex-direction: row;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  flex: auto;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+}
+
+.container {
+  padding: 30px 30px;
+  max-width: 600px;
+  margin:auto;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.control {
+  max-width: 300px;
+}

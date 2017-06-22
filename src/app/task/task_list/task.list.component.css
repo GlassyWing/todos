@@ -1,0 +1,18 @@
+.task-list {
+  padding: 0 15px;
+}
+
+.task-list-head {
+  font-size: 12px;
+  display: flex;
+}
+
+.task-list-content {
+  padding: 0 15px;
+}
+
+.task-list-content md-list-item {
+  font-size: 14px;
+
+}
+
