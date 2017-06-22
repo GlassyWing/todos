@@ -87,11 +87,13 @@ export class SettingsComponent implements OnInit {
     this.preferencesGroup.valueChanges
       .debounceTime(500)
       .switchMap(value => {
+        console.log("before set", value);
         if (value.dailyRemindTime) {
           let utcTime = moment(moment(value.dailyRemindTime).utc());
           value.dailyRemindTime = [utcTime.hour(), utcTime.minute()];
         }
         this.user.preferences = Object.assign({}, this.user.preferences, value);
+        console.log("set preference: ", this.user.preferences);
         return this.userService.setPreferences(this.user.preferences);
       })
       .subscribe(result => {
@@ -126,7 +128,7 @@ export class SettingsComponent implements OnInit {
 
     // 偏好设置组件
     this.startOfDayControl = new FormControl(this.user.preferences.startDayOfWeek);
-    this.dailyRemindTimeControl = new FormControl(moment([2000, 1, 1].concat(this.user.preferences.dailyRemindTime).concat(0)).toDate());
+    this.dailyRemindTimeControl = new FormControl(moment.utc([2000, 1, 1].concat(this.user.preferences.dailyRemindTime).concat(0)).toDate());
     this.dailyRemindToggleControl = new FormControl(this.user.preferences.dailyRemindToggle);
     this.defaultRemindBeforeControl = new FormControl(this.user.preferences.defaultRemindBefore);
     this.defaultPriorityControl = new FormControl(this.user.preferences.defaultPriority);
